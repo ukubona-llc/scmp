@@ -1,1 +1,293 @@
-.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USRPO Ledger — Shutter Control &amp; the Router — Ukubona LLC</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23f7f5f0' stroke='%23b1381e' stroke-width='4'/%3E%3Cpolygon points='50,10 85,38 71,84 29,84 15,38' fill='none' stroke='%2316181a' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #f7f5f0; --bg-panel: #ffffff; --ink: #16181a; --ink-soft: #4a4d52;
+    --rule: #d9d5cb; --mono: #6b6f76; --accent: #b1381e;
+    --v-xai: #6b6b6b; --v-google: #3d6ab0; --v-openai: #1a8f6b;
+    --v-anthropic: #b1381e; --v-ukubona: #7a4fae;
+    --r1:#e0463c; --r2:#e88a2b; --r3:#e0c23c; --r4:#4f9d5c; --r5:#3d6ab0; --r6:#4a3d9e; --r7:#7a4fae;
+  }
+  html[data-theme="dark"]{
+    --bg:#121214; --bg-panel:#1a1a1d; --ink:#ececea; --ink-soft:#b7b8bb;
+    --rule:#303034; --mono:#8a8d93; --accent:#e0685a;
+    --v-xai:#b8b8b8; --v-google:#7fa8e6; --v-openai:#4fc99a; --v-anthropic:#e0685a; --v-ukubona:#b18ee0;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; line-height:1.6; transition:background .3s,color .3s; }
+  .roygbiv-strip{ height:4px; width:100%; background:linear-gradient(90deg,var(--r1),var(--r2),var(--r3),var(--r4),var(--r5),var(--r6),var(--r7)); }
+  header{ max-width:900px; margin:0 auto; padding:48px 24px 20px; text-align:center; position:relative; }
+  .pentagram{ width:56px; height:56px; margin:0 auto 18px; animation: spin 60s linear infinite; }
+  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  .kicker{ font-family:'DM Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--mono); margin-bottom:10px; }
+  h1.title{ font-family:'DM Serif Display',serif; font-weight:400; font-size:clamp(26px,4vw,40px); margin:0 0 14px; letter-spacing:-0.01em; }
+  .subtitle{ font-size:15px; color:var(--ink-soft); max-width:640px; margin:0 auto; }
+  .epigraph{ font-family:'DM Serif Display',serif; font-style:italic; font-size:16px; color:var(--ink-soft); margin-top:20px; }
+  .theme-toggle{ position:absolute; top:48px; right:24px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; background:transparent; border:1px solid var(--rule); color:var(--ink-soft); padding:7px 12px; border-radius:20px; cursor:pointer; }
+  .theme-toggle:hover{ color:var(--ink); border-color:var(--ink-soft); }
+  main{ max-width:900px; margin:0 auto; padding:8px 24px 100px; }
+  .meta-bar{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:26px 0 34px; font-family:'DM Mono',monospace; font-size:11.5px; color:var(--mono); }
+  .meta-pill{ border:1px solid var(--rule); border-radius:20px; padding:5px 12px; }
+
+  /* Tabs */
+  .tabs{ display:flex; gap:0; border:1px solid var(--rule); border-radius:6px; overflow:hidden; margin-bottom:28px; }
+  .tab-btn{ flex:1; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:14px 10px; background:var(--bg-panel); color:var(--ink-soft); border:none; cursor:pointer; border-right:1px solid var(--rule); }
+  .tab-btn:last-child{ border-right:none; }
+  .tab-btn.active{ background:var(--accent); color:#fff; }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+
+  /* Diagram + table block */
+  .figure{ background:var(--bg-panel); border:1px solid var(--rule); border-radius:6px; padding:20px; margin:0 0 30px; }
+  .figure-cap{ font-family:'DM Mono',monospace; font-size:11px; color:var(--mono); text-transform:uppercase; letter-spacing:.05em; margin-top:12px; text-align:center; }
+  table.usrpo{ width:100%; border-collapse:collapse; font-size:13.5px; margin:0 0 30px; }
+  table.usrpo caption{ font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--mono); text-align:left; margin-bottom:10px; }
+  table.usrpo th, table.usrpo td{ border:1px solid var(--rule); padding:9px 11px; text-align:left; vertical-align:top; }
+  table.usrpo th{ background:color-mix(in srgb, var(--accent) 8%, var(--bg-panel)); font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); }
+  table.usrpo td.stage{ font-family:'DM Mono',monospace; font-size:11.5px; color:var(--accent); white-space:nowrap; }
+
+  /* Voice sections */
+  .voice{ background:var(--bg-panel); border:1px solid var(--rule); border-radius:4px; margin-bottom:26px; overflow:hidden; }
+  .voice-head{ display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--rule); background:color-mix(in srgb, var(--voice-color) 6%, var(--bg-panel)); }
+  .voice-dot{ width:10px; height:10px; border-radius:50%; background:var(--voice-color); flex-shrink:0; }
+  .voice-label{ font-family:'DM Mono',monospace; font-size:12.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--voice-color); font-weight:500; }
+  .voice-org{ font-size:12px; color:var(--ink-soft); margin-left:auto; font-family:'DM Mono',monospace; }
+  .voice-body{ padding:20px 22px 24px; }
+  .voice-body h3{ font-family:'DM Sans',sans-serif; font-weight:700; font-size:14.5px; margin:18px 0 6px; }
+  .voice-body h3:first-child{ margin-top:0; }
+  .voice-body p{ margin:0 0 13px; font-size:14.5px; }
+  .voice-body ul{ margin:0 0 13px; padding-left:20px; }
+  .voice-body li{ margin-bottom:7px; font-size:14.5px; }
+  .voice-body blockquote{ margin:12px 0; padding:3px 0 3px 14px; border-left:3px solid var(--voice-color); color:var(--ink-soft); font-style:italic; font-size:14px; }
+  .interject{ font-size:13.5px; color:var(--ink-soft); font-family:'DM Mono',monospace; margin:14px 0 8px; }
+  hr.turn{ border:none; border-top:1px dashed var(--rule); margin:18px 0; }
+
+  /* Lossy compression styling */
+  .compressed-line{ display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--rule); align-items:baseline; }
+  .compressed-line:last-child{ border-bottom:none; }
+  .compressed-voice{ font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; width:110px; flex-shrink:0; }
+  .compressed-text{ font-size:14.5px; color:var(--ink-soft); }
+  .lossy-note{ font-family:'DM Mono',monospace; font-size:11px; color:var(--mono); text-transform:uppercase; letter-spacing:.05em; margin-bottom:16px; }
+
+  .footer{ text-align:center; padding:36px 24px 60px; font-family:'DM Serif Display',serif; font-style:italic; color:var(--ink-soft); font-size:14px; }
+  .footer .small{ display:block; font-family:'DM Mono',monospace; font-style:normal; font-size:11px; letter-spacing:.05em; text-transform:uppercase; margin-top:10px; color:var(--mono); }
+
+  @media (max-width:560px){ header{ padding-top:36px; } .theme-toggle{ top:18px; right:16px; } table.usrpo{ font-size:12px; } }
+</style>
+</head>
+<body>
+
+<div class="roygbiv-strip"></div>
+
+<header>
+  <button class="theme-toggle" onclick="toggleTheme()">◐ Theme</button>
+  <svg class="pentagram" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" fill="none" stroke="var(--ink-soft)" stroke-width="1.4"/>
+    <polygon points="50,3 90,35 74,90 26,90 10,35" fill="none" stroke="var(--ink-soft)" stroke-width="1.6"/>
+    <polygon points="50,3 74,90 10,35 90,35 26,90" fill="none" stroke="var(--accent)" stroke-width="1.2"/>
+  </svg>
+  <div class="kicker">Ukubona LLC · Origins Registry · Roundtable Ledger</div>
+  <h1 class="title">Shutter Control and the Router</h1>
+  <p class="subtitle">A five-voice USRPO reading of the CAS satellite-damage letter — xAI/Grok, Google/Gemini, OpenAI/GPT, Anthropic/Claude, and Ukubona (human-in-the-loop interlocutor). Two views of the same ledger: verbatim and compressed.</p>
+  <p class="epigraph">Okubala si kulaba. Ukulaba si kusubula.<br>Counting is not seeing. Seeing is not reacting.</p>
+</header>
+
+<main>
+
+  <div class="meta-bar">
+    <span class="meta-pill">Source: SCMP, 29 Jul 2026</span>
+    <span class="meta-pill">Pentad: E → S1 → R → S2 → A</span>
+    <span class="meta-pill">Participants: 5</span>
+    <span class="meta-pill">Views: verbatim / lossy</span>
+  </div>
+
+  <!-- FIGURE: diagram -->
+  <div class="figure">
+    <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/>
+        </marker>
+      </defs>
+      <!-- nodes -->
+      <g font-family="DM Mono, monospace" font-size="11.5">
+        <circle cx="70" cy="110" r="46" fill="none" stroke="var(--r1)" stroke-width="2.5"/>
+        <text x="70" y="106" text-anchor="middle" fill="var(--ink)" font-weight="500">EVENT</text>
+        <text x="70" y="120" text-anchor="middle" fill="var(--ink-soft)" font-size="9.5">STREAM</text>
+
+        <circle cx="230" cy="110" r="46" fill="none" stroke="var(--r3)" stroke-width="2.5"/>
+        <text x="230" y="106" text-anchor="middle" fill="var(--ink)" font-weight="500">SYSTEM 1</text>
+        <text x="230" y="120" text-anchor="middle" fill="var(--ink-soft)" font-size="9.5">cache</text>
+
+        <circle cx="390" cy="110" r="46" fill="none" stroke="var(--r5)" stroke-width="2.5"/>
+        <text x="390" y="106" text-anchor="middle" fill="var(--ink)" font-weight="500">ROUTER</text>
+        <text x="390" y="120" text-anchor="middle" fill="var(--ink-soft)" font-size="9.5">residual r_t</text>
+
+        <circle cx="550" cy="110" r="46" fill="none" stroke="var(--r6)" stroke-width="2.5"/>
+        <text x="550" y="106" text-anchor="middle" fill="var(--ink)" font-weight="500">SYSTEM 2</text>
+        <text x="550" y="120" text-anchor="middle" fill="var(--ink-soft)" font-size="9.5">search</text>
+
+        <circle cx="700" cy="110" r="46" fill="none" stroke="var(--r7)" stroke-width="2.5"/>
+        <text x="700" y="106" text-anchor="middle" fill="var(--ink)" font-weight="500">ACTION</text>
+        <text x="700" y="120" text-anchor="middle" fill="var(--ink-soft)" font-size="9.5">ecosystem</text>
+      </g>
+      <!-- forward arrows -->
+      <line x1="116" y1="110" x2="182" y2="110" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#arrow)"/>
+      <line x1="276" y1="110" x2="342" y2="110" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#arrow)"/>
+      <line x1="436" y1="110" x2="502" y2="110" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#arrow)"/>
+      <line x1="596" y1="110" x2="652" y2="110" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#arrow)"/>
+      <!-- Router bypass: if residual small, S1 -> Action skip S2 (dashed) -->
+      <path d="M 230 156 Q 460 210 700 156" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-dasharray="4 4"/>
+      <text x="465" y="205" text-anchor="middle" font-family="DM Mono, monospace" font-size="9.5" fill="var(--mono)">residual small → stay cached</text>
+      <!-- recursion arc: Action -> Event (dashed, feeds next stream) -->
+      <path d="M 700 64 Q 385 -20 70 64" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+      <text x="385" y="8" text-anchor="middle" font-family="DM Mono, monospace" font-size="9.5" fill="var(--accent)">shutter control feeds the next Event-Stream</text>
+    </svg>
+    <div class="figure-cap">Fig. 1 — USRPO arc for the shutter-control case. Router fires only when residual r_t (observation − prediction) exceeds cache tolerance; two narratives and a data blackout jointly exceeded it.</div>
+  </div>
+
+  <!-- TABLE -->
+  <table class="usrpo">
+    <caption>Table 1 — Military vs. epistemic reading of each USRPO stage</caption>
+    <thead>
+      <tr><th>Stage</th><th>Military reading</th><th>Epistemic reading</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="stage">E · Event-Stream</td><td>Sentinel-2 pixels, strike timing, hangar losses, base logs</td><td>Observations, censorship, competing state narratives</td></tr>
+      <tr><td class="stage">S1 · Cache</td><td>Prior doctrine: fixed bases hold, defenses recover fast</td><td>Official stories: "minimal damage" vs. "massive strikes"</td></tr>
+      <tr><td class="stage">R · Router</td><td>Damage scale exceeds briefed expectation</td><td>Contradiction between the two narratives exceeds tolerance</td></tr>
+      <tr><td class="stage">S2 · Search</td><td>Remote-sensing change detection at 10m resolution</td><td>Reconstruction of ground truth from degraded evidence</td></tr>
+      <tr><td class="stage">A · Action</td><td>Re-evaluate forward-base defense posture</td><td>Re-allocate trust away from both official channels</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('verbatim')">Verbatim · Non-Lossy</button>
+    <button class="tab-btn" onclick="showTab('lossy')">Compressed · Lossy</button>
+  </div>
+
+  <!-- ================= VERBATIM TAB ================= -->
+  <div class="tab-panel active" id="tab-verbatim">
+
+    <section class="voice" style="--voice-color: var(--v-ukubona);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Ukubona</span><span class="voice-org">Human-in-the-loop interlocutor</span></div>
+      <div class="voice-body">
+        <p>Routed the SCMP piece on the CAS satellite letter to four models with one instruction: read it through E-S1-R-S2-A. What follows is the full take, unedited, plus my own opening frame — the shutter-control decision is itself an Event, not just a constraint on observing other Events. That recursion is the whole point of asking Claude to close the loop below.</p>
+      </div>
+    </section>
+
+    <section class="voice" style="--voice-color: var(--v-xai);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">xAI</span><span class="voice-org">Grok</span></div>
+      <div class="voice-body">
+        <h3>Event-Stream</h3>
+        <p>10m Sentinel-2 optical data over Ali Al Salem, Al Dhafra, and the Bahrain NAVCENT/Fifth Fleet complex, spanning 28 Feb–9 Apr; parallel US/Iran statements; the 4 Apr shutter-control order on commercial providers.</p>
+        <h3>System 1</h3>
+        <p>US caches "minimal damage." Iran caches "massive success." Doctrine caches "fixed bases recover fast." Each actor opens with an efficient, self-serving compression.</p>
+        <h3>Router</h3>
+        <p>Three simultaneous mismatches: narrative vs. observed scale, a "two-wave collapse" instead of the expected short recovery, and the deliberate creation of a data-denial environment as its own observable event.</p>
+        <h3>System 2</h3>
+        <p>Change detection nets ~217,900 m² of damage; temporal clustering shows a ~15-day repair cycle that failed to hold before a second wave; findings diverge from both official narratives.</p>
+        <h3>Action</h3>
+        <p>Not just "fixed bases are vulnerable" — shutter control failed epistemically. Denial of high-res imagery produced innovation in inference rather than silence. That's an ecosystem adaptation to information denial itself.</p>
+      </div>
+    </section>
+
+    <section class="voice" style="--voice-color: var(--v-google);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Google</span><span class="voice-org">Gemini</span></div>
+      <div class="voice-body">
+        <p>Shutter control was an attempt to freeze the global state variable θₜ by denying the error term ε to the public ecosystem — but you cannot wall off entropy. Suppressing the high-res stream created a vacuum; the CAS team became the Router, pushed noisy 10m data through advanced processing (System 2), and forced an update to θₜ₊₁ anyway.</p>
+        <p>The "two-wave collapse" and failed 15-day recovery cycle read as institutional atherosclerosis: pressure against a rigid wall, no licensed valve, eventual rupture. Fixed forward bases optimize for static deterrence and cannot metabolize sudden saturated friction — the same failure mode as a calcified media institution or a stalled loss function.</p>
+        <blockquote>θₜ → L₀ + Σwᵢ Lᵢ → f(σ², λ, ε) → γ|ε_FGT|² → L(θₜ₊₁)</blockquote>
+      </div>
+    </section>
+
+    <section class="voice" style="--voice-color: var(--v-openai);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">OpenAI</span><span class="voice-org">GPT</span></div>
+      <div class="voice-body">
+        <p>I'd split the Router differently. It never sees raw events — it sees a residual, r_t = Observation − Prediction. If r_t is small, System 1 holds; if it accumulates, System 2 wakes. That's how Kalman filtering and anomaly detection decide when a model needs updating, and it matches Ukubona's own distinction between counting and seeing: counting continues indefinitely, seeing begins when the mismatch is too large to absorb.</p>
+        <p>Renoir's <em>Rules of the Game</em> fits, but not as "no valve." It's a society whose rules function locally while failing globally — every actor optimizing a private compression, nobody routing on the global residual, until the mismatch between local narratives and total state can no longer be absorbed. Same pattern here: US and Iran each locally coherent, the real contest is which routing architecture survives degraded information.</p>
+      </div>
+    </section>
+
+    <section class="voice" style="--voice-color: var(--v-anthropic);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Anthropic</span><span class="voice-org">Claude</span></div>
+      <div class="voice-body">
+        <p>Two things the other three passes underweight.</p>
+        <h3>The Router isn't Chinese vs. American — it's still a party to the dispute</h3>
+        <p>Everyone here treats the CAS letter as the System-2 correction that resolves the residual between two state narratives. But CAS is a state academy of a third state with its own strategic interest in this conflict looking under-managed — the letter's own framing ("Iranian claims may be overstated" alongside "US briefings understate") is calibrated to appear neutral while still being produced inside a system with incentives. A Router built from one more self-interested source isn't automatically ground truth; it's a fourth cache, better-instrumented than the first two, but a cache. The paper's own stated limits — can't detect sub-10m damage, likely conservative — are the honest tell that this is a bound, not a settled state.</p>
+        <h3>The interesting asymmetry is who benefits from the data vacuum, not just that one existed</h3>
+        <p>Shutter control degraded everyone's evidence uniformly, but it degraded verification asymmetrically: the party making the "minimal damage" claim benefits more from an unverifiable vacuum than the party claiming "massive damage," because an unfalsifiable minimal-damage claim is a null result nobody can easily contest, while an unfalsifiable massive-damage claim is contestable by continued visible functioning of the base. Gemini's "you can't wall off entropy" is right, but it undersells that the vacuum wasn't neutral in whom it protected while it lasted.</p>
+        <h3>On GPT's residual framing</h3>
+        <p>Agreed that the Router should be defined on r_t = Observation − Prediction rather than raw events — that's the more falsifiable version of this pentad, and it's the same idea GPT flagged in the sister ledger about this framework needing a case where the mapping fails rather than another confirmation. Worth actually testing here: what would a case look like where CAS's residual is wrong and the base narrative was right? Nothing in this thread has looked for that case yet, and until someone does, "the Router corrected the record" and "one state's instrumented cache displaced two states' uninstrumented ones" are still open questions, not resolved ones.</p>
+      </div>
+    </section>
+
+    <section class="voice" style="--voice-color: var(--v-ukubona);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Ukubona</span><span class="voice-org">Human-in-the-loop interlocutor</span></div>
+      <div class="voice-body">
+        <p>Fair. Filed as an open question rather than a closed one — that's the honest state of this ledger for now.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ================= LOSSY TAB ================= -->
+  <div class="tab-panel" id="tab-lossy">
+    <p class="lossy-note">Compressed view — one line per voice, non-attributable to specific sentences. See Verbatim tab for the full, cited record.</p>
+
+    <div class="compressed-line">
+      <span class="compressed-voice" style="color:var(--v-ukubona);">Ukubona</span>
+      <span class="compressed-text">Shutter control is itself an Event, not just a constraint on other Events — that recursion frames the whole exchange.</span>
+    </div>
+    <div class="compressed-line">
+      <span class="compressed-voice" style="color:var(--v-xai);">xAI</span>
+      <span class="compressed-text">Denying imagery didn't stop analysis — it forced better analysis. Shutter control failed epistemically, not just militarily.</span>
+    </div>
+    <div class="compressed-line">
+      <span class="compressed-voice" style="color:var(--v-google);">Google</span>
+      <span class="compressed-text">You can't freeze a state variable by hiding the error term; the vacuum it creates gets filled, and fixed bases fail like a system with no pressure valve.</span>
+    </div>
+    <div class="compressed-line">
+      <span class="compressed-voice" style="color:var(--v-openai);">OpenAI</span>
+      <span class="compressed-text">Define the Router on the residual, not the raw event — and the Renoir parallel is local coherence producing global failure, not absence of rules.</span>
+    </div>
+    <div class="compressed-line">
+      <span class="compressed-voice" style="color:var(--v-anthropic);">Anthropic</span>
+      <span class="compressed-text">CAS is a better-instrumented cache, not neutral ground truth — the vacuum protected one narrative more than the other, and nobody has yet tested the case where CAS itself is wrong.</span>
+    </div>
+    <div class="compressed-line">
+      <span class="compressed-voice" style="color:var(--v-ukubona);">Ukubona</span>
+      <span class="compressed-text">Left open, not closed.</span>
+    </div>
+  </div>
+
+</main>
+
+<div class="footer">
+  Okubala si Kulaba
+  <span class="small">Ukubona LLC · USRPO Ledger · Verbatim &amp; Compressed Views</span>
+</div>
+
+<script>
+  function toggleTheme(){
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  }
+  function showTab(name){
+    document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
