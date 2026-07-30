@@ -171,6 +171,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('verbatim')">Verbatim · Non-Lossy</button>
     <button class="tab-btn" onclick="showTab('lossy')">Compressed · Lossy</button>
+    <button class="tab-btn" onclick="showTab('source')">Source Digest</button>
   </div>
 
   <!-- ================= VERBATIM TAB ================= -->
@@ -266,6 +267,30 @@
       <span class="compressed-voice" style="color:var(--v-ukubona);">Ukubona</span>
       <span class="compressed-text">Left open, not closed.</span>
     </div>
+  </div>
+
+  <!-- ================= SOURCE DIGEST TAB ================= -->
+  <div class="tab-panel" id="tab-source">
+    <p class="lossy-note">Paraphrased source digest — not a reproduction. Full article at SCMP (linked below); direct quotation here is limited to short, individually attributed phrases.</p>
+
+    <section class="voice" style="--voice-color: var(--mono);">
+      <div class="voice-head">
+        <span class="voice-dot" style="background:var(--mono);"></span>
+        <span class="voice-label" style="color:var(--mono);">Source</span>
+        <span class="voice-org">Victoria Bela · South China Morning Post · 29 Jul 2026</span>
+      </div>
+      <div class="voice-body">
+        <p>The article reports that researchers at the Chinese Academy of Sciences' Institute of Geographic Sciences and Natural Resources Research used Sentinel-2 satellite imagery to independently assess damage from the US–Israeli air campaign against Iran, which began 28 February. Their letter, published in the peer-reviewed journal <em>The Innovation</em> on 7 July, found physical damage exceeding US claims of "minimal damage," while also concluding Iranian claims of "massive strikes" were likely overstated.</p>
+
+        <p>Key figures the researchers reported: roughly 217,900 square metres of total identified damage across US bases in the region; Kuwait's Ali Al Salem Air Base as the single largest target, with 20 strike points; destroyed hangars housing MQ-9 Reaper drones and U-2 aircraft at the UAE's Al Dhafra base; and structural damage to the NAVCENT/Fifth Fleet headquarters complex in Bahrain.</p>
+
+        <p>The team described a "two-wave" pattern — about 58,600 square metres of damage on the first day, roughly two weeks of lower-intensity conflict, then a second wave around 15 March adding about 50,000 square metres — and estimated an average 15-day damage-and-repair cycle, concluding that air-defence resilience did not recover on a short timescale.</p>
+
+        <p>Context: on 4 April the US restricted several commercial satellite providers, including Planet Labs, from distributing high-resolution imagery of the conflict zone — a step the CAS researchers characterized as creating a "data-denial environment." The article notes this limited independent verification of either side's claims. The researchers acknowledged their method could not detect damage below a few metres across and may understate total physical impact.</p>
+
+        <p>Full article: <a href="https://www.scmp.com/news/china/science/article/3362231/chinese-satellite-imagery-analysis-challenges-us-iran-war-claims" target="_blank" rel="noopener">South China Morning Post — "Chinese satellite imagery analysis challenges US-Iran war claims"</a></p>
+      </div>
+    </section>
   </div>
 
 </main>
