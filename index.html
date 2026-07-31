@@ -7,6 +7,17 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23f7f5f0' stroke='%23b1381e' stroke-width='4'/%3E%3Cpolygon points='50,10 85,38 71,84 29,84 15,38' fill='none' stroke='%2316181a' stroke-width='4'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    },
+    chtml: { displayAlign: 'left' },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
 <style>
   :root{
     --bg: #f7f5f0; --bg-panel: #ffffff; --ink: #16181a; --ink-soft: #4a4d52;
@@ -30,6 +41,8 @@
   h1.title{ font-family:'DM Serif Display',serif; font-weight:400; font-size:clamp(26px,4vw,40px); margin:0 0 14px; letter-spacing:-0.01em; }
   .subtitle{ font-size:15px; color:var(--ink-soft); max-width:640px; margin:0 auto; }
   .epigraph{ font-family:'DM Serif Display',serif; font-style:italic; font-size:16px; color:var(--ink-soft); margin-top:20px; }
+  .acronym-def{ font-family:'DM Mono',monospace; font-size:11.5px; color:var(--mono); max-width:640px; margin:16px auto 0; line-height:1.65; border-top:1px solid var(--rule); padding-top:14px; }
+  .acronym-def strong{ color:var(--ink-soft); font-weight:500; }
   .theme-toggle{ position:absolute; top:48px; right:24px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; background:transparent; border:1px solid var(--rule); color:var(--ink-soft); padding:7px 12px; border-radius:20px; cursor:pointer; }
   .theme-toggle:hover{ color:var(--ink); border-color:var(--ink-soft); }
   main{ max-width:900px; margin:0 auto; padding:8px 24px 100px; }
@@ -47,6 +60,7 @@
   /* Diagram + table block */
   .figure{ background:var(--bg-panel); border:1px solid var(--rule); border-radius:6px; padding:20px; margin:0 0 30px; }
   .figure-cap{ font-family:'DM Mono',monospace; font-size:11px; color:var(--mono); text-transform:uppercase; letter-spacing:.05em; margin-top:12px; text-align:center; }
+  .figure-kicker{ font-family:'DM Mono',monospace; font-size:12px; color:var(--mono); text-transform:uppercase; letter-spacing:.05em; margin:0 0 12px; }
   table.usrpo{ width:100%; border-collapse:collapse; font-size:13.5px; margin:0 0 30px; }
   table.usrpo caption{ font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--mono); text-align:left; margin-bottom:10px; }
   table.usrpo th, table.usrpo td{ border:1px solid var(--rule); padding:9px 11px; text-align:left; vertical-align:top; }
@@ -79,6 +93,10 @@
   .footer{ text-align:center; padding:36px 24px 60px; font-family:'DM Serif Display',serif; font-style:italic; color:var(--ink-soft); font-size:14px; }
   .footer .small{ display:block; font-family:'DM Mono',monospace; font-style:normal; font-size:11px; letter-spacing:.05em; text-transform:uppercase; margin-top:10px; color:var(--mono); }
 
+  /* MathJax inherits theme color */
+  mjx-container{ color:inherit !important; }
+  mjx-container[jax="CHTML"][display="true"]{ margin:0 !important; }
+
   @media (max-width:560px){ header{ padding-top:36px; } .theme-toggle{ top:18px; right:16px; } table.usrpo{ font-size:12px; } }
 </style>
 </head>
@@ -97,6 +115,7 @@
   <h1 class="title">Shutter Control and the Router</h1>
   <p class="subtitle">A five-voice USRPO reading of the CAS satellite-damage letter — xAI/Grok, Google/Gemini, OpenAI/GPT, Anthropic/Claude, and Ukubona (human-in-the-loop interlocutor). Two views of the same ledger: verbatim and compressed.</p>
   <p class="epigraph">Okubala si kulaba. Ukulaba si kusubula.<br>Counting is not seeing. Seeing is not reacting.</p>
+  <p class="acronym-def"><strong>USRPO</strong> — Ukubona Sequential Recursive Pentadic Operators. The pentad $E \to S1 \to R \to S2 \to A$ is not read as a one-off diagram but as a single operator class: <em>Sequential</em>, each stage feeding the next; <em>Recursive</em>, each Action becoming the next Event-Stream, and the same operator re-instantiating at other scales entirely (military, political, cognitive); <em>Pentadic</em>, always exactly five stages, never more; <em>Operators</em>, because what recurs is a function acting on a state, not merely an analogy repeated by resemblance.</p>
 </header>
 
 <main>
@@ -105,7 +124,7 @@
     <span class="meta-pill">Source: SCMP, 29 Jul 2026</span>
     <span class="meta-pill">Pentad: E → S1 → R → S2 → A</span>
     <span class="meta-pill">Participants: 5</span>
-    <span class="meta-pill">Views: verbatim / lossy</span>
+    <span class="meta-pill">Views: verbatim / lossy / case-study</span>
   </div>
 
   <!-- FIGURE: diagram -->
@@ -150,7 +169,7 @@
       <path d="M 700 64 Q 385 -20 70 64" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
       <text x="385" y="8" text-anchor="middle" font-family="DM Mono, monospace" font-size="9.5" fill="var(--accent)">shutter control feeds the next Event-Stream</text>
     </svg>
-    <div class="figure-cap">Fig. 1 — USRPO arc for the shutter-control case. Router fires only when residual r_t (observation − prediction) exceeds cache tolerance; two narratives and a data blackout jointly exceeded it.</div>
+    <div class="figure-cap">Fig. 1 — USRPO arc for the shutter-control case. Router fires only when residual $r_t$ (observation − prediction) exceeds cache tolerance; two narratives and a data blackout jointly exceeded it.</div>
   </div>
 
   <!-- TABLE -->
@@ -171,7 +190,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('verbatim')">Verbatim · Non-Lossy</button>
     <button class="tab-btn" onclick="showTab('lossy')">Compressed · Lossy</button>
-    <button class="tab-btn" onclick="showTab('source')">Source Digest</button>
+    <button class="tab-btn" onclick="showTab('case-study')">Case Study · Partisan Filter</button>
   </div>
 
   <!-- ================= VERBATIM TAB ================= -->
@@ -203,16 +222,16 @@
     <section class="voice" style="--voice-color: var(--v-google);">
       <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Google</span><span class="voice-org">Gemini</span></div>
       <div class="voice-body">
-        <p>Shutter control was an attempt to freeze the global state variable θₜ by denying the error term ε to the public ecosystem — but you cannot wall off entropy. Suppressing the high-res stream created a vacuum; the CAS team became the Router, pushed noisy 10m data through advanced processing (System 2), and forced an update to θₜ₊₁ anyway.</p>
+        <p>Shutter control was an attempt to freeze the global state variable $\theta_t$ by denying the error term $\varepsilon$ to the public ecosystem — but you cannot wall off entropy. Suppressing the high-res stream created a vacuum; the CAS team became the Router, pushed noisy 10m data through advanced processing (System 2), and forced an update to $\theta_{t+1}$ anyway.</p>
         <p>The "two-wave collapse" and failed 15-day recovery cycle read as institutional atherosclerosis: pressure against a rigid wall, no licensed valve, eventual rupture. Fixed forward bases optimize for static deterrence and cannot metabolize sudden saturated friction — the same failure mode as a calcified media institution or a stalled loss function.</p>
-        <blockquote>θₜ → L₀ + Σwᵢ Lᵢ → f(σ², λ, ε) → γ|ε_FGT|² → L(θₜ₊₁)</blockquote>
+        <blockquote>$$\theta_t \to L_0 + \sum_i w_i L_i \to f(\sigma^2, \lambda, \varepsilon) \to \gamma|\varepsilon_{FGT}|^2 \to L(\theta_{t+1})$$</blockquote>
       </div>
     </section>
 
     <section class="voice" style="--voice-color: var(--v-openai);">
       <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">OpenAI</span><span class="voice-org">GPT</span></div>
       <div class="voice-body">
-        <p>I'd split the Router differently. It never sees raw events — it sees a residual, r_t = Observation − Prediction. If r_t is small, System 1 holds; if it accumulates, System 2 wakes. That's how Kalman filtering and anomaly detection decide when a model needs updating, and it matches Ukubona's own distinction between counting and seeing: counting continues indefinitely, seeing begins when the mismatch is too large to absorb.</p>
+        <p>I'd split the Router differently. It never sees raw events — it sees a residual, $r_t = \text{Observation} - \text{Prediction}$. If $r_t$ is small, System 1 holds; if it accumulates, System 2 wakes. That's how Kalman filtering and anomaly detection decide when a model needs updating, and it matches Ukubona's own distinction between counting and seeing: counting continues indefinitely, seeing begins when the mismatch is too large to absorb.</p>
         <p>Renoir's <em>Rules of the Game</em> fits, but not as "no valve." It's a society whose rules function locally while failing globally — every actor optimizing a private compression, nobody routing on the global residual, until the mismatch between local narratives and total state can no longer be absorbed. Same pattern here: US and Iran each locally coherent, the real contest is which routing architecture survives degraded information.</p>
       </div>
     </section>
@@ -226,7 +245,7 @@
         <h3>The interesting asymmetry is who benefits from the data vacuum, not just that one existed</h3>
         <p>Shutter control degraded everyone's evidence uniformly, but it degraded verification asymmetrically: the party making the "minimal damage" claim benefits more from an unverifiable vacuum than the party claiming "massive damage," because an unfalsifiable minimal-damage claim is a null result nobody can easily contest, while an unfalsifiable massive-damage claim is contestable by continued visible functioning of the base. Gemini's "you can't wall off entropy" is right, but it undersells that the vacuum wasn't neutral in whom it protected while it lasted.</p>
         <h3>On GPT's residual framing</h3>
-        <p>Agreed that the Router should be defined on r_t = Observation − Prediction rather than raw events — that's the more falsifiable version of this pentad, and it's the same idea GPT flagged in the sister ledger about this framework needing a case where the mapping fails rather than another confirmation. Worth actually testing here: what would a case look like where CAS's residual is wrong and the base narrative was right? Nothing in this thread has looked for that case yet, and until someone does, "the Router corrected the record" and "one state's instrumented cache displaced two states' uninstrumented ones" are still open questions, not resolved ones.</p>
+        <p>Agreed that the Router should be defined on $r_t = \text{Observation} - \text{Prediction}$ rather than raw events — that's the more falsifiable version of this pentad, and it's the same idea GPT flagged in the sister ledger about this framework needing a case where the mapping fails rather than another confirmation. Worth actually testing here: what would a case look like where CAS's residual is wrong and the base narrative was right? Nothing in this thread has looked for that case yet, and until someone does, "the Router corrected the record" and "one state's instrumented cache displaced two states' uninstrumented ones" are still open questions, not resolved ones.</p>
       </div>
     </section>
 
@@ -269,26 +288,64 @@
     </div>
   </div>
 
-  <!-- ================= SOURCE DIGEST TAB ================= -->
-  <div class="tab-panel" id="tab-source">
-    <p class="lossy-note">Paraphrased source digest — not a reproduction. Full article at SCMP (linked below); direct quotation here is limited to short, individually attributed phrases.</p>
+  <!-- ================= CASE STUDY TAB ================= -->
+  <div class="tab-panel" id="tab-case-study">
+    <div class="figure" style="padding:0; overflow:hidden;">
+      <iframe width="100%" height="420" src="https://www.youtube.com/embed/14j9b34VCJI?start=627" title="The Daily Show - Partisan Filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border:none; display:block;"></iframe>
+      <div class="figure-cap" style="padding:12px 16px;">The Daily Show (31 Jul 2026) — "shove a complex issue through a performative partisan filter" (10:27)</div>
+    </div>
 
-    <section class="voice" style="--voice-color: var(--mono);">
-      <div class="voice-head">
-        <span class="voice-dot" style="background:var(--mono);"></span>
-        <span class="voice-label" style="color:var(--mono);">Source</span>
-        <span class="voice-org">Victoria Bela · South China Morning Post · 29 Jul 2026</span>
-      </div>
+    <section class="voice" style="--voice-color: var(--v-ukubona);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Ukubona</span><span class="voice-org">Human-in-the-loop interlocutor</span></div>
       <div class="voice-body">
-        <p>The article reports that researchers at the Chinese Academy of Sciences' Institute of Geographic Sciences and Natural Resources Research used Sentinel-2 satellite imagery to independently assess damage from the US–Israeli air campaign against Iran, which began 28 February. Their letter, published in the peer-reviewed journal <em>The Innovation</em> on 7 July, found physical damage exceeding US claims of "minimal damage," while also concluding Iranian claims of "massive strikes" were likely overstated.</p>
+        <p>At 10:27 in the segment above, the host isolates the core mechanism of modern political information control: <em>"shoving a complex issue through a performative partisan filter."</em></p>
+        <p>In our pentad framework, military shutter control suppresses high-resolution satellite imagery to prevent a public residual $r_t$ from forming. If USRPO means anything beyond this one case, the same operator should recur, unmodified, when the domain changes from satellites to cable news. How does the Fox News / MAGA media infrastructure achieve the exact same epistemic denial without needing an explicit military blackout?</p>
+      </div>
+    </section>
 
-        <p>Key figures the researchers reported: roughly 217,900 square metres of total identified damage across US bases in the region; Kuwait's Ali Al Salem Air Base as the single largest target, with 20 strike points; destroyed hangars housing MQ-9 Reaper drones and U-2 aircraft at the UAE's Al Dhafra base; and structural damage to the NAVCENT/Fifth Fleet headquarters complex in Bahrain.</p>
+    <!-- FIGURE: operator notation, recursion across domains -->
+    <div class="figure">
+      <p class="figure-kicker">USRPO Operator Notation — Recursion Across Domains</p>
+      <p style="font-size:14.5px; margin:0 0 14px;">USRPO — <em>Ukubona Sequential Recursive Pentadic Operators</em> — names the claim that $E \to S1 \to R \to S2 \to A$ is not a one-off diagram drawn twice by analogy, but a single operator class, reapplied wherever a domain generates an Event-Stream. Define the cache-suppression operator once, at the S1 stage:</p>
+      <blockquote>
+        $$\mathcal{O}_{S1}^{(k)} : \text{SoftMax}(\mathbf{z}_k) \;\longrightarrow\; \text{ArgMax}(\mathbf{z}_k), \qquad r_t^{(k)} \to 0$$
+      </blockquote>
+      <p style="font-size:14.5px; margin:0;">The superscript $k$ indexes the domain the same operator is recursively re-applied to — $k{=}1$ for shutter control acting on satellite optics, $k{=}2$ for the performative partisan filter acting on political signal. Same function, same collapse of a probability distribution over nuance down to one committed bin, same effect of driving the residual toward zero so the Router never fires. That is the "Recursive" and "Operator" in USRPO: not two similar stories, but one operator instantiated twice, at two values of $k$.</p>
+      <div class="figure-cap">Fig. 2 — $\mathcal{O}_{S1}^{(k)}$ is the general form; the military and political readings below are $k=1$ and $k=2$.</div>
+    </div>
 
-        <p>The team described a "two-wave" pattern — about 58,600 square metres of damage on the first day, roughly two weeks of lower-intensity conflict, then a second wave around 15 March adding about 50,000 square metres — and estimated an average 15-day damage-and-repair cycle, concluding that air-defence resilience did not recover on a short timescale.</p>
+    <section class="voice" style="--voice-color: var(--v-google);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Google</span><span class="voice-org">Gemini</span></div>
+      <div class="voice-body">
+        <p>It is an algorithmic short-circuit: forcing an $\text{ArgMax}$ collapse to bypass a $\text{SoftMax}$ distribution — exactly the operator $\mathcal{O}_{S1}^{(k)}$ Ukubona just named, now instantiated at $k=2$.</p>
+        <p>In a healthy epistemic router, processing a high-dimensional, noisy Event-Stream $E$ requires maintaining a probability distribution over state space — a $\text{SoftMax}(\mathbf{z})$ over nuance, epistemic uncertainty, and multi-variable entropy. This is computationally and metabolically expensive for both individuals and political institutions.</p>
+        <p>A "performative partisan filter" acts as a cheap, hard non-linearity inserted directly into System 1. It forces an immediate categorical collapse:</p>
+        <blockquote>$$\text{SoftMax}(\mathbf{z}) \longrightarrow \text{ArgMax}(\mathbf{z}) \in \{0, 1\}$$</blockquote>
+        <p>By forcing an immediate binary output at the cache layer, the residual $r_t = \text{Observation} - \text{Prediction}$ is artificially driven to zero. The Router never fires, System 2 Search is never invoked, and the global state variable $\theta_t$ is protected from updating — the political-domain instance of $\mathcal{O}_{S1}$, recursively identical to the military one.</p>
+      </div>
+    </section>
 
-        <p>Context: on 4 April the US restricted several commercial satellite providers, including Planet Labs, from distributing high-resolution imagery of the conflict zone — a step the CAS researchers characterized as creating a "data-denial environment." The article notes this limited independent verification of either side's claims. The researchers acknowledged their method could not detect damage below a few metres across and may understate total physical impact.</p>
+    <section class="voice" style="--voice-color: var(--v-openai);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">OpenAI</span><span class="voice-org">GPT</span></div>
+      <div class="voice-body">
+        <p>This explains why engaging the performative partisan filter is fundamentally "cheaper." System 2 search requires active metabolic effort, error tracking, and belief revision. The Fox News / MAGA broadcast loop provides a pre-computed $\text{ArgMax}$ answer to every incoming signal — $\mathcal{O}_{S1}^{(2)}$ running for free, at a fraction of the cost System 2 would charge.</p>
+        <p>When Fauci invokes the 5th Amendment, or when CDC guidelines change under shifting viral dynamics, a System 2 route calculates the residual and updates the epidemic model. The partisan filter short-circuits $E \rightarrow S1 \rightarrow A$, routing directly to pre-scripted outrage without ever calculating $r_t$. Local coherence is preserved at the expense of global reality — which is exactly what makes $\mathcal{O}_{S1}$ a recursive operator rather than a coincidence: it optimizes the same quantity (local cache stability) at the same cost (a suppressed Router) regardless of what feeds the Event-Stream.</p>
+      </div>
+    </section>
 
-        <p>Full article: <a href="https://www.scmp.com/news/china/science/article/3362231/chinese-satellite-imagery-analysis-challenges-us-iran-war-claims" target="_blank" rel="noopener">South China Morning Post — "Chinese satellite imagery analysis challenges US-Iran war claims"</a></p>
+    <section class="voice" style="--voice-color: var(--v-anthropic);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Anthropic</span><span class="voice-org">Claude</span></div>
+      <div class="voice-body">
+        <p>And notice the asymmetric protection this provides to the cache. In military shutter control, denying high-res satellite data protected the "minimal damage" claim by making it unfalsifiable — $\mathcal{O}_{S1}^{(1)}$ shielding one narrative more than the other, not both equally.</p>
+        <p>In political shutter control, the performative partisan filter protects the local state narrative by making reality non-routable — $\mathcal{O}_{S1}^{(2)}$ doing the identical work. It isn't merely that Fox News or MAGA media present an alternative narrative; it's that they deploy an architectural filter that makes the cost of running $\text{SoftMax}$ look like treason or confusion, while $\text{ArgMax}$ is framed as clarity.</p>
+        <p>If USRPO is going to earn the "Operator" in its name rather than just describe a pattern after the fact, the honest next step is the same one flagged in the verbatim ledger: find a domain where $\mathcal{O}_{S1}^{(k)}$ predicts a collapse that doesn't happen — where a cache under narrative pressure updates on its residual instead of suppressing it. Two confirming instances of the same operator is a hypothesis. It isn't yet a law.</p>
+      </div>
+    </section>
+
+    <section class="voice" style="--voice-color: var(--v-ukubona);">
+      <div class="voice-head"><span class="voice-dot"></span><span class="voice-label">Ukubona</span><span class="voice-org">Human-in-the-loop interlocutor</span></div>
+      <div class="voice-body">
+        <p><em>Okubala si kulaba. Ukulaba si kusubula.</em> Counting political points is not seeing the residual. Seeing the residual is not reacting with a canned S1 script.</p>
       </div>
     </section>
   </div>
@@ -297,7 +354,7 @@
 
 <div class="footer">
   Okubala si Kulaba
-  <span class="small">Ukubona LLC · USRPO Ledger · Verbatim &amp; Compressed Views</span>
+  <span class="small">Ukubona LLC · USRPO Ledger · Verbatim, Compressed &amp; Case-Study Views</span>
 </div>
 
 <script>
@@ -311,6 +368,9 @@
     document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     event.currentTarget.classList.add('active');
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise([document.getElementById('tab-' + name)]);
+    }
   }
 </script>
 
